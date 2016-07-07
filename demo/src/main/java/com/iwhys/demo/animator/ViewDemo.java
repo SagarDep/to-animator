@@ -13,6 +13,8 @@ import android.view.View;
 import com.iwhys.library.animator.AnimatorHolder;
 import com.iwhys.library.animator.UiAnimator;
 
+import java.util.List;
+
 
 /**
  * Author:      iwhys
@@ -23,18 +25,18 @@ import com.iwhys.library.animator.UiAnimator;
 public class ViewDemo extends View {
 
     private final UiAnimator mAnimator;
-    private final AnimatorHolder mAnimatorHolder;
+    private final List<AnimatorHolder> mAnimatorHolders;
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    public ViewDemo(Context context, AnimatorHolder animatorHolder) {
-        this(context, null, animatorHolder);
+    public ViewDemo(Context context, List<AnimatorHolder> animatorHolders) {
+        this(context, null, animatorHolders);
     }
 
-    public ViewDemo(Context context, AttributeSet attrs, AnimatorHolder animatorHolder) {
+    public ViewDemo(Context context, AttributeSet attrs, List<AnimatorHolder> animatorHolders) {
         super(context, attrs);
         mAnimator = new UiAnimator(this);
-        mAnimatorHolder = animatorHolder;
+        mAnimatorHolders = animatorHolders;
         mPaint.setColor(Color.DKGRAY);
         mPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, context.getResources().getDisplayMetrics()));
     }
@@ -45,7 +47,9 @@ public class ViewDemo extends View {
         int y = (int) event.getY();
         Rect rect = new Rect(x - 20, y - 20, x + 20, y + 20);
         if (event.getAction() == MotionEvent.ACTION_UP){
-            mAnimator.start(mAnimatorHolder.originRect(rect));
+            for (AnimatorHolder animatorHolder : mAnimatorHolders) {
+                mAnimator.start(animatorHolder.originRect(rect));
+            }
         }
         return true;
     }

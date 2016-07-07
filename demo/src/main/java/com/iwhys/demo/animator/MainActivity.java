@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.iwhys.demo.animator.items.CircleWave;
 import com.iwhys.demo.animator.items.SomethingRandom;
-import com.iwhys.library.animator.AnimatorHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +27,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final ListView listView = new ListView(this);
-        listView.setAdapter(new ArrayAdapter<Class<? extends AnimatorHolder.AnimatorItem>>(this, android.R.layout.simple_list_item_1, getData()){
+        listView.setAdapter(new ArrayAdapter<String[]>(this, android.R.layout.simple_list_item_1, getData()){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                Class<?> clazz = getItem(position);
+                String[] item = getItem(position);
                 TextView textView = (TextView) super.getView(position, convertView, parent);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 int padding = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()));
                 textView.setPadding(padding, padding, padding, padding);
-                textView.setText(clazz.getSimpleName());
+                textView.setText(DetailActivity.joinStrings(item));
                 textView.setTextColor(getTextColorStateList());
                 return textView;
             }
@@ -47,17 +46,18 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Class<?> clazz = (Class<?>) listView.getAdapter().getItem(i);
-                startActivity(DetailActivity.getIntent(MainActivity.this, clazz.getName()));
+                String[] item = (String[]) listView.getAdapter().getItem(i);
+                startActivity(DetailActivity.getIntent(MainActivity.this, item));
             }
         });
         setContentView(listView);
     }
 
-    private List<Class<? extends AnimatorHolder.AnimatorItem>> getData(){
-        List<Class<? extends AnimatorHolder.AnimatorItem>> list = new ArrayList<>();
-        list.add(CircleWave.class);
-        list.add(SomethingRandom.class);
+    private List<String[]> getData(){
+        List<String[]> list = new ArrayList<>();
+        list.add(new String[]{CircleWave.class.getName()});
+        list.add(new String[]{SomethingRandom.class.getName()});
+        list.add(new String[]{CircleWave.class.getName(), SomethingRandom.class.getName()});
         return list;
     }
 
