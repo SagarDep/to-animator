@@ -77,6 +77,11 @@ public class MyView extends View {
     private void init(){
         mUiAnimator = new UiAnimator(this);
     }
+    
+    public void start(){
+        AnimatorHolder holder = AnimatorHolder.obtain(CircleWave.class).speed(200)
+        mUiAnimator.start(holder)
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -99,7 +104,7 @@ public class MyView extends View {
 }
 ```
 
-5) See the demo for more details, please.
+5) See the demo for more details, and good luck.
 
 ## License
 ```
