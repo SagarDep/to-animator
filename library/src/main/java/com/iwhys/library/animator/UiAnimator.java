@@ -80,6 +80,7 @@ public class UiAnimator implements IAnimator {
             mValueAnimator = null;
         }
         mAnimatorItemsContainer.clear();
+        refreshCanvas();
     }
 
     @Override

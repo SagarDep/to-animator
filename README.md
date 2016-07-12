@@ -59,7 +59,7 @@ public class MyAnimatorItem extends AnimatorHolder.AnimatorItem {
          * This method will be called by the System's VSync signal,
          * and you can get the linear progress by the method {@link #getInputValue()},
          * get the interpolator progress by the method {@link #getProgress()},
-         * and then you can set the specify property value with the progress value,
+         * and then you can set the specified property value with the progress value,
          * and finally easy to implement the animation.
          */
     }
