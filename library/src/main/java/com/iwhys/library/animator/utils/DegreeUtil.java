@@ -3,8 +3,8 @@ package com.iwhys.library.animator.utils;
 import android.graphics.PathMeasure;
 
 /**
- * Author:      王洪胜
- * Email:       wanghongsheng@nq.com
+ * Author:      iwhys
+ * Email:       whs008@gmail.com
  * Time:        7/8/16 06:29
  * Description:
  */

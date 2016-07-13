@@ -10,9 +10,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.animation.LinearInterpolator;
 
-import java.util.HashSet;
+import com.iwhys.library.animator.utils.CollectionsUtil;
+
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Author:      iwhys
@@ -86,7 +88,7 @@ public class SurfaceAnimator implements IAnimator {
         /**
          * The M animator items container.
          */
-        final Set<AnimatorHolder> mAnimatorItemsContainer = new HashSet<>();
+        final List<AnimatorHolder> mAnimatorItemsContainer = new ArrayList<>();
         /**
          * The M surface holder.
          */
@@ -156,11 +158,12 @@ public class SurfaceAnimator implements IAnimator {
          */
         void onDraw(Canvas canvas) {
             clearCanvas(canvas);
-            if (mAnimatorItemsContainer.isEmpty()){
+            List<AnimatorHolder> list = CollectionsUtil.getSnapshot(mAnimatorItemsContainer);
+            if (list.isEmpty()){
                 stopAnimator();
                 return;
             }
-            Iterator<AnimatorHolder> iterator = mAnimatorItemsContainer.iterator();
+            Iterator<AnimatorHolder> iterator = list.iterator();
             while (iterator.hasNext()){
                 AnimatorHolder holder = iterator.next();
                 if (holder.isCanceled() || holder.isFinished()){

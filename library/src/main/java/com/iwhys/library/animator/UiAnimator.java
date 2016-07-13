@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 
+import com.iwhys.library.animator.utils.CollectionsUtil;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,7 +100,7 @@ public class UiAnimator implements IAnimator {
      * @param canvas the canvas
      */
     public void onDraw(Canvas canvas) {
-        List<AnimatorHolder> list = getSnapshot(mAnimatorItemsContainer);
+        List<AnimatorHolder> list = CollectionsUtil.getSnapshot(mAnimatorItemsContainer);
         /**
          * stop when mAnimatorItemsContainer is empty
          */
@@ -133,14 +134,6 @@ public class UiAnimator implements IAnimator {
         if (mTarget instanceof ViewGroup){
             ((ViewGroup) mTarget).setWillNotDraw(false);
         }
-    }
-
-    private static <T> List<T> getSnapshot(Collection<T> src){
-        List<T> result = new ArrayList<>(src.size());
-        for (T item : src) {
-            result.add(item);
-        }
-        return result;
     }
 
 }
