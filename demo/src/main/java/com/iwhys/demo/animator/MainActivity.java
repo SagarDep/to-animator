@@ -8,6 +8,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -74,5 +75,11 @@ public class MainActivity extends AppCompatActivity {
         states[0] = new int[]{android.R.attr.state_pressed};
         states[1] = new int[0];
         return new ColorStateList(states, colors);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        System.out.println("MainActivity->onTouchEvent(): historySize=" + ev.getHistorySize());
+        return true;
     }
 }

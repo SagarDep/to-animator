@@ -31,6 +31,11 @@ public class UiAnimator implements IAnimator {
 
     private int mHeight;
 
+    /**
+     * Is force enable hardware
+     */
+    private boolean mForceHardware = false;
+
     private ValueAnimator mValueAnimator;
 
     /**
@@ -54,6 +59,14 @@ public class UiAnimator implements IAnimator {
             }
         });
         mValueAnimator.start();
+        if (mForceHardware && mTarget instanceof View){
+            ((View) mTarget).setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
+    }
+
+    public UiAnimator forceHardware(boolean forceHardware) {
+        mForceHardware = forceHardware;
+        return this;
     }
 
     @Override
@@ -79,6 +92,9 @@ public class UiAnimator implements IAnimator {
         if (mValueAnimator != null && mValueAnimator.isRunning()){
             mValueAnimator.cancel();
             mValueAnimator = null;
+        }
+        if (mForceHardware && mTarget instanceof View){
+            ((View) mTarget).setLayerType(View.LAYER_TYPE_NONE, null);
         }
         mAnimatorItemsContainer.clear();
         refreshCanvas();
