@@ -48,6 +48,7 @@ public class ViewDemo extends View {
         Rect rect = new Rect(x - 1, y - 1, x + 1, y + 1);
         if (event.getAction() == MotionEvent.ACTION_UP){
             for (AnimatorHolder animatorHolder : mAnimatorHolders) {
+                animatorHolder.reset();
                 mAnimator.start(animatorHolder.originRect(rect));
             }
         }

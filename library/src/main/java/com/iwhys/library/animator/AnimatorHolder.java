@@ -436,7 +436,7 @@ public class  AnimatorHolder {
     /**
      * Reset the key properties to reuse
      */
-    private void reset(){
+    public void reset(){
         mStartTime = 0;
         mLastNewItemTime = 0;
         mListener = null;

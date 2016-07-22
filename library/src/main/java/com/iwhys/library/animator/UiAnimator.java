@@ -112,10 +112,6 @@ public class UiAnimator implements IAnimator {
         for (AnimatorHolder holder : mAnimatorItemsContainer) {
             holder.cancel();
         }
-        /**
-         * clear current container, and do the last canvas refresh
-         */
-        mAnimatorItemsContainer.clear();
         refreshCanvas();
     }
 
