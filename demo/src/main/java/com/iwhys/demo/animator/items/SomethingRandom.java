@@ -2,15 +2,13 @@ package com.iwhys.demo.animator.items;
 
 import android.animation.TimeInterpolator;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.view.animation.OvershootInterpolator;
 
 import com.iwhys.demo.animator.MyApp;
@@ -38,12 +36,12 @@ public class SomethingRandom extends AnimatorHolder.AnimatorItem {
     private ColorFilter mColorFilter;
     private PathMeasure mPathMeasure;
     private float[] mCurrentPosition = new float[2];
-    private Drawable mDrawable;
+    private Bitmap mDrawable;
 
     public SomethingRandom() {
-        mDrawable = ContextCompat.getDrawable(MyApp.getInstance(), mDrawableList[(int) (Math.random() * mDrawableList.length)]);
-        int w = mDrawable.getIntrinsicWidth();
-        int h = mDrawable.getIntrinsicHeight();
+        mDrawable = BitmapFactory.decodeResource(MyApp.getInstance().getResources(), mDrawableList[(int) (Math.random() * mDrawableList.length)]);
+        int w = mDrawable.getWidth();
+        int h = mDrawable.getHeight();
         mCurrentRect.set(-w >> 1, -h >> 1, w >> 1, h >> 1);
         insetRect(w, h);
         mColorFilter = createColorFilter();
@@ -62,8 +60,12 @@ public class SomethingRandom extends AnimatorHolder.AnimatorItem {
         setCurrentRect();
         paint.setAlpha(getAlpha());
         paint.setColorFilter(getColorFilter());
-        Bitmap bitmap = ((BitmapDrawable) mDrawable).getBitmap();
-        canvas.drawBitmap(bitmap, null, mCurrentRect, paint);
+        canvas.drawBitmap(mDrawable, null, mCurrentRect, paint);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mDrawable.recycle();
     }
 
     private float randomX() {

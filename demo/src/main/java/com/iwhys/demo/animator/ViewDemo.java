@@ -45,7 +45,7 @@ public class ViewDemo extends View {
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
-        Rect rect = new Rect(x - 20, y - 20, x + 20, y + 20);
+        Rect rect = new Rect(x - 1, y - 1, x + 1, y + 1);
         if (event.getAction() == MotionEvent.ACTION_UP){
             for (AnimatorHolder animatorHolder : mAnimatorHolders) {
                 mAnimator.start(animatorHolder.originRect(rect));

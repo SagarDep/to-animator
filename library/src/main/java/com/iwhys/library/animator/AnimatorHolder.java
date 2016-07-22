@@ -361,9 +361,8 @@ public class  AnimatorHolder {
      * @param canvas the canvas
      */
     private void performDraw(Canvas canvas){
-        Iterator<AnimatorItem> iterator = mRunningList.iterator();
-        while (iterator.hasNext()) {
-            AnimatorItem item = iterator.next();
+        final ArrayList<AnimatorItem> runningListCopy = (ArrayList<AnimatorItem>) mRunningList.clone();
+        for (AnimatorItem item : runningListCopy) {
             if (item.isFinished()) {
                 if (mSpeed ==0 && mFillAfter){
                     if (mListener != null && !mHasFillAfter){
@@ -372,7 +371,7 @@ public class  AnimatorHolder {
                     }
                     item.onDraw(canvas, mPaint);
                 } else {
-                    iterator.remove();
+                    mRunningList.remove(item);
                     if (mCacheItem){
                         mRecyclerSet.add(item);
                     }

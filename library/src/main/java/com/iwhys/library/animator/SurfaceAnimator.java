@@ -10,11 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.animation.LinearInterpolator;
 
-import com.iwhys.library.animator.utils.CollectionsUtil;
-
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Author:      iwhys
@@ -49,10 +45,6 @@ public class SurfaceAnimator implements IAnimator {
         mHeight = height;
     }
 
-    private void initAnimator(){
-        mDrawTask.startAnimator();
-    }
-
     @Override
     public void stop(){
         mDrawTask.stopAnimator();
@@ -73,11 +65,8 @@ public class SurfaceAnimator implements IAnimator {
 
     @Override
     public void start(AnimatorHolder holder){
-        if (!mDrawTask.isAnimatorRunning()){
-            initAnimator();
-        }
         holder.setSize(mWidth, mHeight);
-        mDrawTask.mAnimatorItemsContainer.add(holder);
+        mDrawTask.start(holder);
     }
 
 
@@ -88,7 +77,7 @@ public class SurfaceAnimator implements IAnimator {
         /**
          * The M animator items container.
          */
-        final List<AnimatorHolder> mAnimatorItemsContainer = new ArrayList<>();
+        final ArrayList<AnimatorHolder> mAnimatorItemsContainer = new ArrayList<>();
         /**
          * The M surface holder.
          */
@@ -112,6 +101,15 @@ public class SurfaceAnimator implements IAnimator {
             return mValueAnimator != null && mValueAnimator.isRunning();
         }
 
+        void start(AnimatorHolder holder){
+            if (!isAnimatorRunning()){
+                startAnimator();
+            }
+            if (!mAnimatorItemsContainer.contains(holder)){
+                mAnimatorItemsContainer.add(holder);
+            }
+        }
+
         /**
          * Start animator.
          */
@@ -133,9 +131,21 @@ public class SurfaceAnimator implements IAnimator {
          */
         void stopAnimator(){
             if (mValueAnimator != null && mValueAnimator.isRunning()){
+                mValueAnimator.removeAllListeners();
+                mValueAnimator.removeAllUpdateListeners();
                 mValueAnimator.cancel();
                 mValueAnimator = null;
             }
+            /**
+             * cancel all holders,and this operation will recycle all holders
+             */
+            for (AnimatorHolder holder : mAnimatorItemsContainer) {
+                holder.cancel();
+            }
+            /**
+             * clear current container, and do the last canvas refresh
+             */
+            mAnimatorItemsContainer.clear();
         }
 
         /**
@@ -158,16 +168,14 @@ public class SurfaceAnimator implements IAnimator {
          */
         void onDraw(Canvas canvas) {
             clearCanvas(canvas);
-            List<AnimatorHolder> list = CollectionsUtil.getSnapshot(mAnimatorItemsContainer);
-            if (list.isEmpty()){
+            if (mAnimatorItemsContainer.isEmpty()){
                 stopAnimator();
                 return;
             }
-            Iterator<AnimatorHolder> iterator = list.iterator();
-            while (iterator.hasNext()){
-                AnimatorHolder holder = iterator.next();
+            ArrayList<AnimatorHolder> list = (ArrayList<AnimatorHolder>) mAnimatorItemsContainer.clone();
+            for (AnimatorHolder holder : list) {
                 if (holder.isCanceled() || holder.isFinished()){
-                    iterator.remove();
+                    mAnimatorItemsContainer.remove(holder);
                 } else {
                     holder.onDraw(canvas);
                 }

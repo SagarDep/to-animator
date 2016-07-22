@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Author:      iwhys
@@ -83,8 +82,10 @@ public class UiAnimator implements IAnimator {
         if (!(mValueAnimator != null && mValueAnimator.isRunning())){
             initAnimator();
         }
-        holder.setSize(mWidth, mHeight);
-        mAnimatorItemsContainer.add(holder);
+        if (!mAnimatorItemsContainer.contains(holder)){
+            holder.setSize(mWidth, mHeight);
+            mAnimatorItemsContainer.add(holder);
+        }
     }
 
     @Override
@@ -137,19 +138,17 @@ public class UiAnimator implements IAnimator {
      * @param canvas the canvas
      */
     public void onDraw(Canvas canvas) {
-        ArrayList<AnimatorHolder> list = (ArrayList<AnimatorHolder>) mAnimatorItemsContainer.clone();
         /**
          * stop when mAnimatorItemsContainer is empty
          */
-        if (list.isEmpty()){
+        if (mAnimatorItemsContainer.isEmpty()){
             stop();
             return;
         }
-        Iterator<AnimatorHolder> iterator = list.iterator();
-        while (iterator.hasNext()){
-            AnimatorHolder holder = iterator.next();
-            if (holder.isCanceled() || holder.isFinished()){
-                iterator.remove();
+        final ArrayList<AnimatorHolder> list = (ArrayList<AnimatorHolder>) mAnimatorItemsContainer.clone();
+        for (AnimatorHolder holder : list) {
+            if (holder.isCanceled() || holder.isFinished()) {
+                mAnimatorItemsContainer.remove(holder);
             } else {
                 holder.onDraw(canvas);
             }
