@@ -41,11 +41,13 @@ public class ViewDemo extends View {
         mPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, context.getResources().getDisplayMetrics()));
     }
 
+    final Rect rect = new Rect();
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
-        Rect rect = new Rect(x - 1, y - 1, x + 1, y + 1);
+        rect.set(x - 1, y - 1, x + 1, y + 1);
         if (event.getAction() == MotionEvent.ACTION_UP){
             for (AnimatorHolder animatorHolder : mAnimatorHolders) {
                 animatorHolder.reset();

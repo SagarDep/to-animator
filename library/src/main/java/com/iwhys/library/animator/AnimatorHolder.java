@@ -597,6 +597,7 @@ public class  AnimatorHolder {
      * the base class of single animator item
      */
     public static abstract class AnimatorItem {
+        protected final static TimeInterpolator sLinearInterpolator = new LinearInterpolator();
         /**
          * The M origin rect.
          */
@@ -631,7 +632,7 @@ public class  AnimatorHolder {
         /**
          * The animator's time interpolator
          */
-        private TimeInterpolator mInterpolator = new LinearInterpolator();
+        private TimeInterpolator mInterpolator = sLinearInterpolator;
 
         /**
          * Instantiates a new Animator item.

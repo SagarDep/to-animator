@@ -1,5 +1,6 @@
 package com.iwhys.demo.animator.items;
 
+import android.animation.TimeInterpolator;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,10 +19,11 @@ public class CircleWave extends AnimatorHolder.AnimatorItem {
 
     private final static int mOffset = 100;
     private final static int mStrokeWidth = 8;
+    private final static TimeInterpolator mInterpolator = new AccelerateInterpolator();
 
     @Override
     protected void onAttached() {
-        setInterpolator(new AccelerateInterpolator());
+        setInterpolator(mInterpolator);
     }
 
     @Override
