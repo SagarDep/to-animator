@@ -33,9 +33,11 @@ public class SomethingRandom extends AnimatorHolder.AnimatorItem {
 
     private final static TimeInterpolator mInterpolator = new OvershootInterpolator();
 
+    private final Path mPath = new Path();
+    private final PathMeasure mPathMeasure = new PathMeasure();
+
     private ColorFilter mColorFilter;
-    private PathMeasure mPathMeasure;
-    private float[] mCurrentPosition = new float[2];
+    private final float[] mCurrentPosition = new float[2];
     private Bitmap mDrawable;
 
     public SomethingRandom() {
@@ -51,8 +53,8 @@ public class SomethingRandom extends AnimatorHolder.AnimatorItem {
     protected void onAttached() {
         setDuration(5000);
         setInterpolator(mInterpolator);
-        Path path = createPath();
-        mPathMeasure = new PathMeasure(path, false);
+        createPath();
+        mPathMeasure.setPath(mPath, false);
     }
 
     @Override
@@ -117,14 +119,13 @@ public class SomethingRandom extends AnimatorHolder.AnimatorItem {
     /**
      * 创建运动路径
      */
-    private Path createPath() {
-        Path path = new Path();
-        path.moveTo(mOriginRect.centerX(), mOriginRect.centerY());
+    private void createPath() {
+        mPath.rewind();
+        mPath.moveTo(mOriginRect.centerX(), mOriginRect.centerY());
         /**
          * 末端点应该设置为负值,保证条目自然的移除出屏幕外
          */
-        path.cubicTo(randomX(), randomY(), randomX(), randomY(), randomX(), -mCurrentRect.height());
-        return path;
+        mPath.cubicTo(randomX(), randomY(), randomX(), randomY(), randomX(), -mCurrentRect.height());
     }
 
     /**
