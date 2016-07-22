@@ -93,6 +93,8 @@ public class UiAnimator implements IAnimator {
          * stop the animator
          */
         if (mValueAnimator != null && mValueAnimator.isRunning()){
+            mValueAnimator.removeAllListeners();
+            mValueAnimator.removeAllUpdateListeners();
             mValueAnimator.cancel();
             mValueAnimator = null;
         }
