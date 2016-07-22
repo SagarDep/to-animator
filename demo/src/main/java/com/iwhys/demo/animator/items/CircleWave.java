@@ -3,8 +3,6 @@ package com.iwhys.demo.animator.items;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RadialGradient;
-import android.graphics.Shader;
 import android.view.animation.AccelerateInterpolator;
 
 import com.iwhys.library.animator.AnimatorHolder;
@@ -20,8 +18,6 @@ public class CircleWave extends AnimatorHolder.AnimatorItem {
 
     private final static int mOffset = 100;
     private final static int mStrokeWidth = 8;
-    private final static int mEdgeColor = Color.LTGRAY;
-    private final static int mCenterColor = Color.GRAY;
 
     @Override
     protected void onAttached() {
@@ -31,10 +27,9 @@ public class CircleWave extends AnimatorHolder.AnimatorItem {
     @Override
     protected void onDraw(Canvas canvas, Paint paint) {
         setRect();
-        RadialGradient radialGradient = new RadialGradient(mCurrentRect.centerX(), mCurrentRect.centerY(), mCurrentRect.width() / 2, mCenterColor, mEdgeColor, Shader.TileMode.REPEAT);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setShader(radialGradient);
         paint.setAlpha(getAlpha());
+        paint.setColor(Color.DKGRAY);
         paint.setStrokeWidth(getStrokeWidth());
         canvas.drawCircle(mCurrentRect.centerX(), mCurrentRect.centerY(), mCurrentRect.width() / 2, paint);
     }
@@ -46,7 +41,7 @@ public class CircleWave extends AnimatorHolder.AnimatorItem {
     }
 
     private int getStrokeWidth() {
-        return (int) (mStrokeWidth * (1 - getProgress()) + 1);
+        return (int) (mStrokeWidth * (1 - getProgress()));
     }
 
     private int getAlpha() {

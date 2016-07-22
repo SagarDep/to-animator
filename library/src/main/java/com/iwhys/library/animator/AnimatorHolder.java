@@ -440,6 +440,7 @@ public class  AnimatorHolder {
     private void reset(){
         mStartTime = 0;
         mLastNewItemTime = 0;
+        mListener = null;
         mFinished = false;
         mCanceled = false;
     }

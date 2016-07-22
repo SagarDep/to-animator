@@ -51,7 +51,7 @@ public class DetailActivity extends AppCompatActivity {
                     Class clazz = Class.forName(s);
                     AnimatorHolder holder = null;
                     if (clazz.equals(CircleWave.class)){
-                        holder = AnimatorHolder.obtain(CircleWave.class).speed(200);
+                        holder = AnimatorHolder.obtain(CircleWave.class).speed(250);
                     } else if (clazz.equals(SomethingRandom.class)){
                         holder = AnimatorHolder.obtain(SomethingRandom.class).speed(100);
                     }
