@@ -694,7 +694,8 @@ public class  AnimatorHolder {
          * @return valid value[0, 1]
          */
         protected float getInputValue() {
-            return (System.currentTimeMillis() - mStartTime) * 1.f / mDuration;
+            float value = (System.currentTimeMillis() - mStartTime) * 1.f / mDuration;
+            return Math.min(1.f, value);
         }
 
         /**
