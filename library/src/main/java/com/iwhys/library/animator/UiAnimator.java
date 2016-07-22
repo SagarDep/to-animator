@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 
-import com.iwhys.library.animator.utils.CollectionsUtil;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Author:      iwhys
@@ -20,7 +17,10 @@ import java.util.List;
  */
 public class UiAnimator implements IAnimator {
 
-    private final List<AnimatorHolder> mAnimatorItemsContainer = new ArrayList<>();
+    /**
+     * The container of the running 'AnimatorHolder'
+     */
+    private final ArrayList<AnimatorHolder> mAnimatorItemsContainer = new ArrayList<>();
 
     /**
      * The target
@@ -135,7 +135,7 @@ public class UiAnimator implements IAnimator {
      * @param canvas the canvas
      */
     public void onDraw(Canvas canvas) {
-        List<AnimatorHolder> list = CollectionsUtil.getSnapshot(mAnimatorItemsContainer);
+        ArrayList<AnimatorHolder> list = (ArrayList<AnimatorHolder>) mAnimatorItemsContainer.clone();
         /**
          * stop when mAnimatorItemsContainer is empty
          */
