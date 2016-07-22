@@ -62,7 +62,7 @@ public class SurfaceAnimator implements IAnimator {
     public void destroy(){
         stop();
         mDrawTask.mAnimatorItemsContainer.clear();
-        AnimatorHolder.clear();
+        AnimatorHolder.destroyAll();
         mSurfaceView = null;
         try {
             mDrawTask.join();

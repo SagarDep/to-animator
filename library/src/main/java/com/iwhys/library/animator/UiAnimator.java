@@ -89,13 +89,29 @@ public class UiAnimator implements IAnimator {
 
     @Override
     public void stop() {
+        /**
+         * stop the animator
+         */
         if (mValueAnimator != null && mValueAnimator.isRunning()){
             mValueAnimator.cancel();
             mValueAnimator = null;
         }
+        /**
+         * if necessary change restore the target's layer type.
+         */
         if (mForceHardware && mTarget instanceof View){
             ((View) mTarget).setLayerType(View.LAYER_TYPE_NONE, null);
         }
+
+        /**
+         * cancel all holders,and this operation will recycle all holders
+         */
+        for (AnimatorHolder holder : mAnimatorItemsContainer) {
+            holder.cancel();
+        }
+        /**
+         * clear current container, and do the last canvas refresh
+         */
         mAnimatorItemsContainer.clear();
         refreshCanvas();
     }
@@ -103,7 +119,10 @@ public class UiAnimator implements IAnimator {
     @Override
     public void destroy(){
         stop();
-        AnimatorHolder.clear();
+        /**
+         * destroy all holders
+         */
+        AnimatorHolder.destroyAll();
         mTarget = null;
     }
 

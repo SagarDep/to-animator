@@ -184,9 +184,19 @@ public class  AnimatorHolder {
     }
 
     /**
-     * clear the pools
+     * destroy the pools
      */
-    public static void clear(){
+    public static void destroyAll(){
+        Set<Class> keys = sPoolMap.keySet();
+        for (Class key : keys) {
+            Pools.SynchronizedPool<AnimatorHolder> pool = sPoolMap.get(key);
+            if (pool != null){
+                while (pool.acquire() != null){
+                    AnimatorHolder holder = pool.acquire();
+                    holder.destroy();
+                }
+            }
+        }
         sPoolMap.clear();
     }
 
@@ -437,9 +447,25 @@ public class  AnimatorHolder {
     /**
      * Put current object into the pool
      */
-    private void recycle(){
+    public void recycle(){
         Pools.SynchronizedPool<AnimatorHolder> pool = sPoolMap.get(mItemClass);
         pool.release(this);
+    }
+
+    /**
+     * Destroy all items
+     */
+    private void destroy(){
+        cancel();
+        for (AnimatorItem animatorItem : mRunningList) {
+            animatorItem.onDestroy();
+        }
+        mRunningList.clear();
+
+        for (AnimatorItem animatorItem : mRecyclerSet) {
+            animatorItem.onDestroy();
+        }
+        mRecyclerSet.clear();
     }
 
     /**
@@ -684,6 +710,11 @@ public class  AnimatorHolder {
          * @param paint  paint
          */
         protected abstract void onDraw(Canvas canvas, Paint paint);
+
+        /**
+         * release all resources
+         */
+        protected void onDestroy(){}
 
         /**
          * Random float.
