@@ -29,7 +29,7 @@ allprojects {
 2) Add the dependency:
 ```
 dependencies {
-    compile 'com.github.iwhys:to-animator:v1.0'
+    compile 'com.github.iwhys:to-animator:v1.1.0'
 }
 ```
 
