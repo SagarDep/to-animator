@@ -112,7 +112,6 @@ public class UiAnimator implements IAnimator {
         for (AnimatorHolder holder : mAnimatorItemsContainer) {
             holder.cancel();
         }
-        refreshCanvas();
     }
 
     @Override

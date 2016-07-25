@@ -36,7 +36,7 @@ public class ViewDemo extends View {
     public ViewDemo(Context context, AttributeSet attrs) {
         super(context, attrs);
         mAnimator = new UiAnimator(this);
-        mPaint.setColor(Color.DKGRAY);
+        mPaint.setColor(Color.WHITE);
         mPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, context.getResources().getDisplayMetrics()));
     }
 
@@ -67,9 +67,13 @@ public class ViewDemo extends View {
         }
     }
 
+    private final static String TEXT = "View";
+
     @Override
     protected void onDraw(Canvas canvas) {
         mAnimator.onDraw(canvas);
+        int value = Math.round(mPaint.measureText(TEXT));
+        canvas.drawText(TEXT, (getWidth() - value) >> 1, getHeight() >> 1, mPaint);
     }
 
     @Override

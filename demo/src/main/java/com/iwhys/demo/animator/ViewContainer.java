@@ -1,6 +1,7 @@
 package com.iwhys.demo.animator;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -34,6 +35,7 @@ public class ViewContainer extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         mViewDemo = new ViewDemo(context, attrs);
+        mViewDemo.setBackgroundColor(Color.BLACK);
         mSurfaceViewDemo = new SurfaceViewDemo(context, attrs);
         setOrientation(VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
@@ -51,8 +53,8 @@ public class ViewContainer extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
-        int h = getHeight() >> 1;
-        y = y > h ? y - h : y;
+        int h = getHeight() / getChildCount();
+        y = y % h;
         mRect.set(x - 1, y - 1, x + 1, y + 1);
         if (event.getAction() == MotionEvent.ACTION_UP){
             mViewDemo.start(mRect);

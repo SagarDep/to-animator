@@ -139,10 +139,6 @@ public class SurfaceAnimator implements IAnimator {
             for (AnimatorHolder holder : mAnimatorItemsContainer) {
                 holder.cancel();
             }
-            /**
-             * clear current container, and do the last canvas refresh
-             */
-            mAnimatorItemsContainer.clear();
         }
 
         /**
@@ -150,10 +146,16 @@ public class SurfaceAnimator implements IAnimator {
          */
         void performDraw(){
             synchronized (mSurfaceHolder){
-                Canvas canvas = mSurfaceHolder.lockCanvas(null);
-                if (canvas != null){
-                    onDraw(canvas);
-                    mSurfaceHolder.unlockCanvasAndPost(canvas);
+                Canvas canvas = null;
+                try {
+                    canvas = mSurfaceHolder.lockCanvas(null);
+                    if (canvas != null){
+                        onDraw(canvas);
+                    }
+                } finally {
+                    if (canvas != null){
+                        mSurfaceHolder.unlockCanvasAndPost(canvas);
+                    }
                 }
             }
         }
