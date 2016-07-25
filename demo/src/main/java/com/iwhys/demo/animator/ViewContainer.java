@@ -1,9 +1,12 @@
 package com.iwhys.demo.animator;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -23,6 +26,7 @@ public class ViewContainer extends LinearLayout {
     private final Rect mRect = new Rect();
     private ViewDemo mViewDemo;
     private SurfaceViewDemo mSurfaceViewDemo;
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public ViewContainer(Context context) {
         this(context, null);
@@ -37,6 +41,8 @@ public class ViewContainer extends LinearLayout {
         mViewDemo = new ViewDemo(context, attrs);
         mViewDemo.setBackgroundColor(Color.BLACK);
         mSurfaceViewDemo = new SurfaceViewDemo(context, attrs);
+        mPaint.setColor(Color.RED);
+        mPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, context.getResources().getDisplayMetrics()));
         setOrientation(VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
         params.weight = 1;
@@ -47,6 +53,18 @@ public class ViewContainer extends LinearLayout {
     public void setAnimatorHolders(List<AnimatorHolder> animatorHolders) {
         mViewDemo.setAnimatorHolders(animatorHolders);
         mSurfaceViewDemo.setAnimatorHolders(animatorHolders);
+    }
+
+    private final static String VIEW = "View";
+    private final static String SURFACE_VIEW = "SurfaceView";
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        int view = Math.round(mPaint.measureText(VIEW));
+        canvas.drawText(VIEW, (getWidth() - view) >> 1, getHeight() >> 2, mPaint);
+        int surfaceView = Math.round(mPaint.measureText(SURFACE_VIEW));
+        canvas.drawText(SURFACE_VIEW, (getWidth() - surfaceView) >> 1, getHeight() - (getHeight() >> 2), mPaint);
     }
 
     @Override
