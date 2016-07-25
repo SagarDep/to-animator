@@ -191,8 +191,8 @@ public class  AnimatorHolder {
         for (Class key : keys) {
             Pools.SynchronizedPool<AnimatorHolder> pool = sPoolMap.get(key);
             if (pool != null){
-                while (pool.acquire() != null){
-                    AnimatorHolder holder = pool.acquire();
+                AnimatorHolder holder = pool.acquire();
+                for (; holder != null; holder = pool.acquire()){
                     holder.destroy();
                 }
             }
