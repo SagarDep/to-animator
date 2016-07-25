@@ -3,7 +3,6 @@ package com.iwhys.demo.animator;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -11,6 +10,7 @@ import com.iwhys.library.animator.AnimatorHolder;
 import com.iwhys.library.animator.IAnimator;
 import com.iwhys.library.animator.SurfaceAnimator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,35 +23,30 @@ import java.util.List;
 public class SurfaceViewDemo extends SurfaceView implements SurfaceHolder.Callback {
 
     private final IAnimator mAnimator;
-    private final List<AnimatorHolder> mAnimatorHolders;
+    private final ArrayList<AnimatorHolder> mAnimatorHolders = new ArrayList<>();
 
-    public SurfaceViewDemo(Context context, List<AnimatorHolder> animatorHolders) {
-        this(context, null, animatorHolders);
+    public SurfaceViewDemo(Context context) {
+        this(context, null);
     }
 
-    public SurfaceViewDemo(Context context, AttributeSet attrs, List<AnimatorHolder> animatorHolders) {
+    public SurfaceViewDemo(Context context, AttributeSet attrs) {
         super(context, attrs);
         getHolder().addCallback(this);
         mAnimator = new SurfaceAnimator(this);
-        mAnimatorHolders = animatorHolders;
     }
 
-    final Rect rect = new Rect();
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-        rect.set(x - 1, y - 1, x + 1, y + 1);
-        if (event.getAction() == MotionEvent.ACTION_UP){
-            for (AnimatorHolder animatorHolder : mAnimatorHolders) {
-                animatorHolder.reset();
-                mAnimator.start(animatorHolder.originRect(rect));
-            }
+    public void start(Rect rect){
+        for (AnimatorHolder animatorHolder : mAnimatorHolders) {
+            animatorHolder.reset();
+            mAnimator.start(animatorHolder.originRect(rect));
         }
-        return true;
     }
 
+    public void setAnimatorHolders(List<AnimatorHolder> animatorHolders) {
+        if (animatorHolders.isEmpty()) return;
+        mAnimatorHolders.clear();
+        mAnimatorHolders.addAll(animatorHolders);
+    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {

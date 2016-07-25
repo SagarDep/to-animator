@@ -35,7 +35,7 @@ public class SurfaceAnimator implements IAnimator {
         mSurfaceView = surfaceView;
         mSurfaceView.setZOrderOnTop(true);
         SurfaceHolder holder = mSurfaceView.getHolder();
-        holder.setFormat(PixelFormat.TRANSLUCENT);
+        holder.setFormat(PixelFormat.TRANSPARENT);
         mDrawTask = new DrawTask(holder);
         mDrawTask.start();
     }
@@ -100,7 +100,7 @@ public class SurfaceAnimator implements IAnimator {
 
         void start(AnimatorHolder holder){
             if (!isAnimatorRunning()){
-                startAnimator();
+                initAnimator();
             }
             if (!mAnimatorItemsContainer.contains(holder)){
                 mAnimatorItemsContainer.add(holder);
@@ -108,9 +108,9 @@ public class SurfaceAnimator implements IAnimator {
         }
 
         /**
-         * Start animator.
+         * Init animator.
          */
-        void startAnimator(){
+        void initAnimator(){
             mValueAnimator = ValueAnimator.ofInt(0, 1);
             mValueAnimator.setInterpolator(new LinearInterpolator());
             mValueAnimator.setRepeatCount(ValueAnimator.INFINITE);

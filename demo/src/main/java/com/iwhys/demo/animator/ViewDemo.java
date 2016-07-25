@@ -7,12 +7,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.iwhys.library.animator.AnimatorHolder;
 import com.iwhys.library.animator.UiAnimator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,36 +25,32 @@ import java.util.List;
 public class ViewDemo extends View {
 
     private final UiAnimator mAnimator;
-    private final List<AnimatorHolder> mAnimatorHolders;
+    private final ArrayList<AnimatorHolder> mAnimatorHolders = new ArrayList<>();
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    public ViewDemo(Context context, List<AnimatorHolder> animatorHolders) {
-        this(context, null, animatorHolders);
+    public ViewDemo(Context context) {
+        this(context, null);
     }
 
-    public ViewDemo(Context context, AttributeSet attrs, List<AnimatorHolder> animatorHolders) {
+    public ViewDemo(Context context, AttributeSet attrs) {
         super(context, attrs);
         mAnimator = new UiAnimator(this);
-        mAnimatorHolders = animatorHolders;
         mPaint.setColor(Color.DKGRAY);
         mPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, context.getResources().getDisplayMetrics()));
     }
 
-    final Rect rect = new Rect();
+    public void setAnimatorHolders(List<AnimatorHolder> animatorHolders) {
+        if (animatorHolders.isEmpty()) return;
+        mAnimatorHolders.clear();
+        mAnimatorHolders.addAll(animatorHolders);
+    }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        int x = (int) event.getX();
-        int y = (int) event.getY();
-        rect.set(x - 1, y - 1, x + 1, y + 1);
-        if (event.getAction() == MotionEvent.ACTION_UP){
-            for (AnimatorHolder animatorHolder : mAnimatorHolders) {
-                animatorHolder.reset();
-                mAnimator.start(animatorHolder.originRect(rect));
-            }
+    public void start(Rect rect){
+        for (AnimatorHolder animatorHolder : mAnimatorHolders) {
+            animatorHolder.reset();
+            mAnimator.start(animatorHolder.originRect(rect));
         }
-        return true;
     }
 
     @Override
@@ -71,16 +67,8 @@ public class ViewDemo extends View {
         }
     }
 
-    private boolean mHasDrawText = false;
-    private final static String TEXT = "Tap the screen to start.";
-
     @Override
     protected void onDraw(Canvas canvas) {
-        if (!mHasDrawText){
-            mHasDrawText = true;
-            int value = Math.round(mPaint.measureText(TEXT));
-            canvas.drawText(TEXT, (getWidth() - value) >> 1, getHeight() >> 1, mPaint);
-        }
         mAnimator.onDraw(canvas);
     }
 
