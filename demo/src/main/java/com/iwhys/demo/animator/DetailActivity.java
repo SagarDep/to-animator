@@ -2,11 +2,14 @@ package com.iwhys.demo.animator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.iwhys.demo.animator.items.CircleWave;
 import com.iwhys.demo.animator.items.SomethingRandom;
@@ -61,7 +64,15 @@ public class DetailActivity extends AppCompatActivity {
                 if (!holders.isEmpty()){
                     setTitle(joinStrings(classPaths));
                     View view = new ViewDemo(this, holders);
-                    setContentView(view);
+                    view.setBackgroundColor(Color.LTGRAY);
+                    View surfaceView = new SurfaceViewDemo(this, holders);
+                    LinearLayout container = new LinearLayout(this);
+                    container.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+                    params.weight = 1;
+                    container.addView(view, params);
+                    container.addView(surfaceView, params);
+                    setContentView(container);
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

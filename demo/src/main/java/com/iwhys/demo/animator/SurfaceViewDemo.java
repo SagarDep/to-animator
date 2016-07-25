@@ -7,11 +7,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.iwhys.demo.animator.items.CircleWave;
-import com.iwhys.demo.animator.items.SomethingRandom;
 import com.iwhys.library.animator.AnimatorHolder;
 import com.iwhys.library.animator.IAnimator;
 import com.iwhys.library.animator.SurfaceAnimator;
+
+import java.util.List;
 
 
 /**
@@ -23,26 +23,32 @@ import com.iwhys.library.animator.SurfaceAnimator;
 public class SurfaceViewDemo extends SurfaceView implements SurfaceHolder.Callback {
 
     private final IAnimator mAnimator;
+    private final List<AnimatorHolder> mAnimatorHolders;
 
-    public SurfaceViewDemo(Context context) {
-        this(context, null);
+    public SurfaceViewDemo(Context context, List<AnimatorHolder> animatorHolders) {
+        this(context, null, animatorHolders);
     }
 
-    public SurfaceViewDemo(Context context, AttributeSet attrs) {
+    public SurfaceViewDemo(Context context, AttributeSet attrs, List<AnimatorHolder> animatorHolders) {
         super(context, attrs);
         getHolder().addCallback(this);
         mAnimator = new SurfaceAnimator(this);
+        mAnimatorHolders = animatorHolders;
     }
+
+    final Rect rect = new Rect();
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
-        Rect rect = new Rect(x - 10, y - 10, x + 10, y + 10);
-        AnimatorHolder holder = AnimatorHolder.obtain(SomethingRandom.class).speed(100).originRect(rect);
-        AnimatorHolder wave = AnimatorHolder.obtain(CircleWave.class).totalDuration(2000).speed(100).originRect(rect);
-        mAnimator.start(holder);
-        mAnimator.start(wave);
+        rect.set(x - 1, y - 1, x + 1, y + 1);
+        if (event.getAction() == MotionEvent.ACTION_UP){
+            for (AnimatorHolder animatorHolder : mAnimatorHolders) {
+                animatorHolder.reset();
+                mAnimator.start(animatorHolder.originRect(rect));
+            }
+        }
         return true;
     }
 

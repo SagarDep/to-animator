@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.os.HandlerThread;
+import android.os.Process;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.animation.LinearInterpolator;
@@ -56,11 +57,7 @@ public class SurfaceAnimator implements IAnimator {
         mDrawTask.mAnimatorItemsContainer.clear();
         AnimatorHolder.destroyAll();
         mSurfaceView = null;
-        try {
-            mDrawTask.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        mDrawTask.quit();
     }
 
     @Override
@@ -93,7 +90,7 @@ public class SurfaceAnimator implements IAnimator {
          * @param surfaceHolder the surface holder
          */
         DrawTask(SurfaceHolder surfaceHolder){
-            super("Animator");
+            super("Animator", Process.THREAD_PRIORITY_DISPLAY);
             mSurfaceHolder = surfaceHolder;
         }
 
