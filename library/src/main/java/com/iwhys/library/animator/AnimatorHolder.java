@@ -422,7 +422,7 @@ public class  AnimatorHolder {
      * @return result
      */
     private boolean animatorFinished(){
-        if (!mFinished && mRunningList.isEmpty()){
+        if (!mFinished && mRunningList.isEmpty() && mTotalDuration > 0){
             mFinished = true;
             if (mListener != null){
                 mListener.onFinished();
